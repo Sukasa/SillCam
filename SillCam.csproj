@@ -37,12 +37,10 @@
     <Reference Include="Ivy, Version=2.3.3658.19884, Culture=neutral, processorArchitecture=x86">
       <HintPath>Ivy.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="RaspberryCam">
       <HintPath>packages\RaspberryCam.1.0.0.0\lib\net40\RaspberryCam.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
