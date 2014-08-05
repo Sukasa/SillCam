@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SillCam", "SillCam.csproj", "{263AC247-0279-457E-A938-1A975190F784}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SillCam Test Controller", "..\SillCam Test Controller\SillCam Test Controller.csproj", "{80327047-52C1-4D39-B6AB-A82683BC7A26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{263AC247-0279-457E-A938-1A975190F784}.Debug|x86.ActiveCfg = Debug|x86
+		{263AC247-0279-457E-A938-1A975190F784}.Debug|x86.Build.0 = Debug|x86
+		{263AC247-0279-457E-A938-1A975190F784}.Release|x86.ActiveCfg = Release|x86
+		{263AC247-0279-457E-A938-1A975190F784}.Release|x86.Build.0 = Release|x86
+		{80327047-52C1-4D39-B6AB-A82683BC7A26}.Debug|x86.ActiveCfg = Debug|x86
+		{80327047-52C1-4D39-B6AB-A82683BC7A26}.Debug|x86.Build.0 = Debug|x86
+		{80327047-52C1-4D39-B6AB-A82683BC7A26}.Release|x86.ActiveCfg = Release|x86
+		{80327047-52C1-4D39-B6AB-A82683BC7A26}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
