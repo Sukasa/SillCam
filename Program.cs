@@ -10,13 +10,13 @@ namespace SillCam
 {
     class Program
     {
-        private static int HistorySize = 10;
-        private static int SavePeriod = 20;
+        private static int HistorySize;
+        private static int SavePeriod;
         private static int RollingPtr = 0;
         private static int SaveTimer = 0;
-        private static string OutputFormat = "/home/camera/img/capture{0}.jpg";
-        private static string Domain = "192.168.1:2010";
-        private static string DevicePath = "/dev/video0";
+        private static string OutputFormat;
+        private static string Domain;
+        private static string DevicePath;
         private static Picture[] Snapshots;
         private static Cameras Camera;
         private static Object LockObj = new Object();
