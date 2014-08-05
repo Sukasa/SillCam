@@ -112,13 +112,36 @@ namespace SillCam
             Picture Snapshot = Snapshots[Index];
             if (Snapshot.PictureData == null)
             {
-                return -1;
+                Console.WriteLine("Failed to save snapshot: no data");
+                return Timestamp();
             }
-            ImageConverter ic = new ImageConverter();
-            Image img = (Image)ic.ConvertFrom(Snapshot.PictureData);
-            String Filename = string.Format(OutputFormat, Timestamp(Snapshot.Timestamp));
-            img.Save(Filename);
 
+            if (Snapshot.PictureData.Length < 5)
+            {
+                Console.WriteLine("Failed to save snapshot: truncated data");
+                return Timestamp();
+            }
+
+            if (Snapshot.Timestamp.Year < 2000)
+            {
+                Console.WriteLine("Failed to save snapshot: invalid timestamp");
+                return Timestamp();
+            }
+
+            ImageConverter ic = new ImageConverter();
+            try
+            {
+                Image img = (Image)ic.ConvertFrom(Snapshot.PictureData);
+
+                String Filename = string.Format(OutputFormat, Timestamp(Snapshot.Timestamp));
+                img.Save(Filename);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR");
+                return Timestamp();
+            }
             return Timestamp();
         }
 
