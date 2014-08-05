@@ -41,27 +41,21 @@ namespace SillCam.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int HistorySize {
             get {
                 return ((int)(this["HistorySize"]));
             }
-            set {
-                this["HistorySize"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int SavePeriod {
             get {
                 return ((int)(this["SavePeriod"]));
-            }
-            set {
-                this["SavePeriod"] = value;
             }
         }
     }

@@ -8,10 +8,10 @@
     <Setting Name="OutputFormat" Type="System.String" Scope="Application">
       <Value Profile="(Default)">capture{0}.jpg</Value>
     </Setting>
-    <Setting Name="HistorySize" Type="System.Int32" Scope="User">
+    <Setting Name="HistorySize" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="SavePeriod" Type="System.Int32" Scope="User">
+    <Setting Name="SavePeriod" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">15</Value>
     </Setting>
   </Settings>
