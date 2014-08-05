@@ -16,6 +16,7 @@ namespace SillCam
         private static int SaveTimer = 0;
         private static string OutputFormat = "/home/camera/img/capture{0}.jpg";
         private static string Domain = "192.168.1:2010";
+        private static string DevicePath = "/dev/video0";
         private static Picture[] Snapshots;
         private static Cameras Camera;
         private static Object LockObj = new Object();
@@ -26,13 +27,16 @@ namespace SillCam
         static void Main(string[] args)
         {
 
+            // *** Pull configuration information from config file
             Domain = Properties.Settings.Default.Domain;
+            DevicePath = Properties.Settings.Default.DevicePath;
             OutputFormat = Properties.Settings.Default.OutputFormat;
             HistorySize = Properties.Settings.Default.HistorySize;
             SavePeriod = Properties.Settings.Default.SavePeriod;
 
             Snapshots = new Picture[HistorySize];
 
+            // *** Set up Ivy
             Ivy = new Ivy();
             Ivy.AppName = "Sill Camera Controller";
             Ivy.BindMsg("TOKEN_.*", SaveHistory, null);
@@ -40,22 +44,25 @@ namespace SillCam
             Ivy.DebugProtocol = true;
             Ivy.Start(Domain);
             
-
-            Camera = Cameras.DeclareDevice().Named("Camera 1").WithDevicePath("/dev/video0").Memorize();
+            // *** Declare camera device and start streaming in video at 1fps
+            Camera = Cameras.DeclareDevice().Named("Camera 1").WithDevicePath(DevicePath).Memorize();
             Camera.Get("Camera 1").StartVideoStreaming(new PictureSize(640, 480), 1);
 
             while (true)
             {
                 Thread.Sleep(1000);
-
                 lock (LockObj)
                 {
                     TakePicture();
+
+                    // *** If we're in the middle of a rolling capture
                     if (SaveTimer > 0)
                     {
-                        Console.WriteLine("Rolling Save");
+                        // Do another capture
                         SaveTimer--;
                         SavePicture(RollingPtr);
+
+                        // *** After completion, broadcast that we finished
                         if (SaveTimer == 0)
                         {
                             Ivy.SendMsg("SILLCAM_ROLLINGCOMPLETE:{0}:{1}", TimestampStart, Timestamp());
@@ -66,6 +73,7 @@ namespace SillCam
             }
         }
 
+        // *** Save a single picture from the camera buffer
         static void SaveSinglePicture(object sender, IvyMessageEventArgs e)
         {
             Console.WriteLine("Saving single picture");
@@ -78,6 +86,7 @@ namespace SillCam
             }
         }
 
+        // *** Save the entire camera buffer, and schedule continuing saves as we take more pictures
         static void SaveHistory(object sender, IvyMessageEventArgs e)
         {
             Console.WriteLine("Saving history");
@@ -85,29 +94,35 @@ namespace SillCam
             lock (LockObj)
             {
                 if (SaveTimer == 0)
-                    TimestampStart = Timestamp();
-                SaveTimer = SavePeriod;
-                for (int SaveIndex = RollingPtr; Count < HistorySize; SaveIndex = ++SaveIndex % HistorySize, Count++)
                 {
-                    SavePicture(SaveIndex);
+                    TimestampStart = Timestamp();
+
+                    for (int SaveIndex = RollingPtr; Count < HistorySize; SaveIndex = ++SaveIndex % HistorySize, Count++)
+                    {
+                        SavePicture(SaveIndex);
+                    }
                 }
+                SaveTimer = SavePeriod;
             }
         }
 
+        // *** Save a picture, and return the picture's capture timestamp
         static Int64 SavePicture(int Index)
         {
             Picture Snapshot = Snapshots[Index];
             if (Snapshot.PictureData == null)
+            {
                 return -1;
+            }
             ImageConverter ic = new ImageConverter();
             Image img = (Image)ic.ConvertFrom(Snapshot.PictureData);
             String Filename = string.Format(OutputFormat, Timestamp(Snapshot.Timestamp));
             img.Save(Filename);
-            Console.WriteLine("Wrote Image to file: " + Filename);
 
             return Timestamp();
         }
 
+        // *** Pull in a picture from the camera stream
         static void TakePicture()
         {
             Picture Snapshot;
@@ -126,7 +141,6 @@ namespace SillCam
         {
             return Timestamp(DateTime.Now);
         }
-
 
         public static Int64 Timestamp(DateTime dateTime)
         {

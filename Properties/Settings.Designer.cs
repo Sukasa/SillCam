@@ -58,5 +58,14 @@ namespace SillCam.Properties {
                 return ((int)(this["SavePeriod"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/dev/video0")]
+        public string DevicePath {
+            get {
+                return ((string)(this["DevicePath"]));
+            }
+        }
     }
 }
