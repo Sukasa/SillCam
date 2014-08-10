@@ -22,6 +22,7 @@ namespace SillCam
         private static Object LockObj = new Object();
         private static Ivy Ivy;
 
+        private const int FPS = 2;
         private static Int64 TimestampStart;
 
         static void Main(string[] args)
@@ -46,11 +47,11 @@ namespace SillCam
             
             // *** Declare camera device and start streaming in video at 1fps
             Camera = Cameras.DeclareDevice().Named("Camera 1").WithDevicePath(DevicePath).Memorize();
-            Camera.Get("Camera 1").StartVideoStreaming(new PictureSize(640, 480), 1);
+            Camera.Get("Camera 1").StartVideoStreaming(new PictureSize(640, 480), FPS);
 
             while (true)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(1000 / FPS);
                 lock (LockObj)
                 {
                     TakePicture();
